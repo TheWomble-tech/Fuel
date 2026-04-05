@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cost Per Mile</title>
+
+<style>
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #020617;
+    color: white;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .app {
+    width: 100%;
+    max-width: 420px;
+  }
+
+  h1 {
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 1.4rem;
+    opacity: 0.8;
+  }
+
+  /* MAIN RESULT */
+  .main {
+    text-align: center;
+    margin: 30px 0;
+  }
+
+  .value {
+    font-size: 4rem;
+    font-weight: bold;
+    color: #22c55e;
+  }
+
+  .label {
+    font-size: 1rem;
+    opacity: 0.7;
+  }
+
+  /* INPUTS */
+  .card {
+    background: #111827;
+    padding: 15px;
+    border-radius: 12px;
+  }
+
+  input {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border-radius: 8px;
+    border: none;
+    background: #020617;
+    color: white;
+    font-size: 1rem;
+  }
+
+  /* SECONDARY INFO */
+  .secondary {
+    margin-top: 20px;
+    font-size: 0.95rem;
+    opacity: 0.8;
+  }
+
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <h1>Fuel Cost</h1>
+
+  <div class="main">
+    <div class="value" id="ppm">20.56p</div>
+    <div class="label">per mile</div>
+  </div>
+
+  <div class="card">
+    <label>MPG (UK)</label>
+    <input id="mpg" type="number" value="42">
+
+    <label>Fuel price (pence per litre)</label>
+    <input id="price" type="number" value="189.9">
+
+    <label>Trip miles (optional)</label>
+    <input id="distance" type="number" value="100">
+  </div>
+
+  <div class="secondary" id="extra"></div>
+
+</div>
+
+<script>
+function update() {
+  const mpg = parseFloat(document.getElementById("mpg").value);
+  const price = parseFloat(document.getElementById("price").value);
+  const distance = parseFloat(document.getElementById("distance").value) || 0;
+
+  if (!mpg || !price) return;
+
+  const litresPerMile = 4.54609 / mpg;
+  const costPerMile = litresPerMile * price;
+  const tripCost = (costPerMile * distance) / 100;
+
+  document.getElementById("ppm").textContent =
+    costPerMile.toFixed(2) + "p";
+
+  document.getElementById("extra").innerHTML =
+    "£" + tripCost.toFixed(2) + " for " + distance + " miles";
+}
+
+document.querySelectorAll("input").forEach(i => {
+  i.addEventListener("input", update);
+});
+
+update();
+</script>
+
+</body>
+</html>
